@@ -14,7 +14,7 @@ canvas.height = BLOCK_SIZE * BOARD_HEIGHT
 context.scale(BLOCK_SIZE, BLOCK_SIZE)
 
 //3. board
- const board = [
+const board = [
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -58,7 +58,7 @@ const piece = {
   //2. game loop
 function update () {
   draw()
-  //window.requestAnimationFrame(update)
+  window.requestAnimationFrame(update)
 }
 
 function  draw() {
@@ -84,10 +84,44 @@ function  draw() {
   })
 }
 
-document.addEventListener('keydown', Event =>{
-  if (Event.key == 'ArrowLeft') piece.position.x--
-  if (Event.key == 'ArrowRight') piece.position.x++
-  if (Event.key == 'ArrowDown') piece.position.y++
+function checkCollision () {
+  return piece.shape.find((row, y) => {
+    return row.find((value, x) => {
+      console.log("checkcollision")
+      return (
+        value === 0 &&
+        board[y + piece.position.y] &&
+        board[y + piece.position.y][x + piece.position.x] === 0
+      )
+    })
+  })
+}
+
+document.addEventListener('keydown', event => {
+  if (event.key == 'ArrowLeft') {
+    
+    piece.position.x--
+    if (checkCollision()) {
+      piece.position.x++
+      
+    }
+  }
+  if (event.key == 'ArrowRight') {
+    piece.position.x++
+    
+    if (checkCollision()) {
+      piece.position.x--
+      c
+    }
+  }
+  if (event.key == 'ArrowDown') {
+    piece.position.y++
+    
+    if (checkCollision()) {
+      piece.position.y--
+      
+    }
+  }
 })
 
 update()
